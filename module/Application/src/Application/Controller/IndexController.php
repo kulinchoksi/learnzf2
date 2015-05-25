@@ -10,22 +10,31 @@
 namespace Application\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
-use Zend\View\Model\ViewModel;
+use Zend\EventManager\EventManager;
+// use Zend\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
 	public function indexAction()
 	{
-        $serviceLocator = $this->getServiceLocator();
-        $config = $serviceLocator->get('config');
-        return array(
-                    'version'=> $config['application']['version'], 
-                    'applicationName' => $config['application']['name']
-                );
-	}
+            $serviceLocator = $this->getServiceLocator();
+            $config = $serviceLocator->get('config');
+            return array(
+                'version' => $config['application']['version'],
+                'applicationName' => $config['application']['name']
+            );
+        }
+        
+        public function shankarnewsongAction()
+        {
+            $newSongEvent = new EventManager("channel-25");        
+            $newSongEvent->trigger("new song", null, array("artist" => "Shankar"));
+            
+            return array();
+        }
 	
 	public function aboutAction()
 	{
-		return array();
+            return array();
 	}
 }

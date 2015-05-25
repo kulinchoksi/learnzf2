@@ -8,8 +8,7 @@
 return array(
     'modules' => array(
         'Application',
-        'Debug',
-        'User'
+        'Debug'
         ),
     'module_listener_options' => array(
         'module_paths' => array(
