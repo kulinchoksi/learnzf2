@@ -4,6 +4,8 @@ namespace User\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 
+use User\Model\User as UserModel;
+
 use User\Form\User as UserForm;
 
 /**
@@ -31,7 +33,10 @@ class AccountController extends AbstractActionController
 
             $form->setData($data);
             if ($form->isValid()) {
-                // @ToDo: save data of new user
+                $userModel = new UserModel();
+                $id = $userModel->insert($form->getData());
+                
+                // @Todo: redirect to view user action
             }
         }
         
@@ -60,6 +65,12 @@ class AccountController extends AbstractActionController
     
     public function deleteAction()
     {
+        $id = $this->getRequest()->getQuery()->get('id');
+        if ($id) {
+            $userModel = new UserModel();
+            $userModel->delete(array('id' => $id));
+        }
+        
         return array();
     }
 }

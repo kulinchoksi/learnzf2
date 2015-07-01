@@ -1,0 +1,16 @@
+<?php
+return array(
+    'db' => array(
+        // database driver: Mysqli, Sqlsrv, Pdo_Sqlite, Pdo_Mysql, Pdo=OtherPdoDriver
+        'driver' => 'Pdo_Mysql',
+        'database' => 'learnzf2',
+        'username' => 'root',
+        'password' => 'adminuser',
+        'hostname' => 'localhost',
+        // 'port' => 1234,
+        // 'charset' => 'utf8',
+        'options' => array(
+            'buffer_results' => 1
+        )
+    )
+);
