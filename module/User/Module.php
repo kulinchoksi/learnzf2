@@ -23,6 +23,6 @@ class Module
     {
         $services = $e->getApplication()->getServiceManager();
         $dbAdapter = $services->get('database');
-        Zend\Db\TableGateway\Feature\GlobalAdapterFeature::setStaticAdapter($dbAdapter);
+        \Zend\Db\TableGateway\Feature\GlobalAdapterFeature::setStaticAdapter($dbAdapter);
     }
 }
