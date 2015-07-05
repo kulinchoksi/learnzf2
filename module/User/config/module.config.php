@@ -35,7 +35,7 @@ return array(
     
     'controllers' => array(
         'invokables' => array(
-            'User\Controller\Accountr' => 'User\Controller\AccountController',
+            'User\Controller\Account' => 'User\Controller\AccountController',
         ),
     ),
     
