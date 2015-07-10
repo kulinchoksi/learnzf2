@@ -67,6 +67,12 @@ class Module implements AutoloaderProviderInterface
             $artist = $event->getParam("artist");
             error_log("Got new song from artist: " . $artist);
         });
+
+        // attach profiler debugging to view enderer event
+        $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'injectViewVariables'), 100);
+
+        // add profiler debugging to error log
+        $eventManager->attach(MvcEvent::EVENT_FINISH, array($this, 'dbProfilerStats'), 2);
     }
     
     // dispatch error handler/callback
@@ -110,5 +116,41 @@ class Module implements AutoloaderProviderInterface
         $sidebarView->addChild($viewModel, 'content');
         
         $event->setViewModel($sidebarView);
+    }
+
+    /**
+     * Injects common variables in the view model
+     *
+     * @param MvcEvent $event
+     */
+    public function injectViewVariables(MvcEvent $event)
+    {
+        $viewModel = $event->getViewModel();
+
+        $services = $event->getApplication()->getServiceManager();
+        $variables = array();
+        if ($services->has('database-profiler')) {
+            // if found database profiler service then inject in the view
+            $profiler = $services->get('database-profiler');
+            $variables['profiler'] = $profiler;
+        }
+
+        if (!empty($variables)) {
+            $viewModel->setVariables($variables);
+        }
+
+    }
+
+    public function dbProfilerStats(MvcEvent $event)
+    {
+        $services = $event->getApplication()->getServiceManager();
+
+        if ($services->has('database-profiler')) {
+            $profiler = $services->get('database-profiler');
+            foreach ($profiler->getProfiles() as $profile) {
+                $message = '"' . $profile['sql'] . '(' . implode(',', $profile['parameters']->getNamedArray()) . ')" took ' . $profile['elapse'] . ' seconds' . "\n";
+                error_log($message);
+            }
+        }
     }
 }

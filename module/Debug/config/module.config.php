@@ -14,6 +14,9 @@ return array(
         'abstract_factories' => array(
             'timer' => "Debug\Service\Factory\TimerAbstractFactory",
         ),
+        'initializers' => array(
+            'Debug\Service\Initializer\DbProfiler',
+        ),
     ),
     
     'view_manager' => array(
