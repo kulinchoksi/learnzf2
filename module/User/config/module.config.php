@@ -50,4 +50,10 @@ return array(
             'database' => 'User\Service\Factory\Database'
         )
     ),
+
+    'table-gateway' => array(
+        'map' => array(
+            'users' => 'User\Model\User',
+        )
+    ),
 );
