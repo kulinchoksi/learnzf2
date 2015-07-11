@@ -69,6 +69,12 @@ class AccountController extends AbstractActionController
         if ($id) {
             $userModel = new UserModel();
             $userModel->delete(array('id' => $id));
+            
+            // redirect to view page
+            return $this->redirect()->toRoute('user/default', array(
+                'controller' => 'account',
+                'action' => 'view',
+            ));
         }
         
         return array();
