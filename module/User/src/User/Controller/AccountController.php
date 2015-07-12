@@ -36,7 +36,12 @@ class AccountController extends AbstractActionController
                 $userModel = new UserModel();
                 $id = $userModel->insert($form->getData());
                 
-                // @Todo: redirect to view user action
+                // redirect to view user action
+                return $this->redirect()->toRoute('user/default', array(
+                    'controller' => 'Account',
+                    'action' => 'view',
+                    'id' => $id,
+                ));
             }
         }
         
@@ -50,7 +55,10 @@ class AccountController extends AbstractActionController
      */
     public function registerAction()
     {
-        return array();
+        $result = $this->forward()->dispatch('User\Controller\Account', array(
+            'action' => 'add',
+        ));
+        return $result;
     }
     
     public function viewAction()
