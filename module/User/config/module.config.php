@@ -11,7 +11,7 @@ return array(
                     'defaults' => array(
                         '__NAMESPACE__' => 'User\Controller',
                         'controller'    => 'Account',
-                        'action'        => 'index',
+                        'action'        => 'me',
                     ),
                 ),
                 'may_terminate' => true,

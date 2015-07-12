@@ -1,6 +1,8 @@
 <?php
 namespace User;
 
+use Zend\Mvc\MvcEvent;
+
 class Module
 {
     public function getConfig()
@@ -19,10 +21,27 @@ class Module
         );
     }
     
-    public function onBootstrap($e)
+    public function onBootstrap(MvcEvent $event)
     {
-        $services = $e->getApplication()->getServiceManager();
+        $services = $event->getApplication()->getServiceManager();
         $dbAdapter = $services->get('database');
         \Zend\Db\TableGateway\Feature\GlobalAdapterFeature::setStaticAdapter($dbAdapter);
+        
+        $eventManager = $event->getApplication()->getEventManager();
+        $eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'protectPage'), -100);
+    }
+    
+    public function protectPage(MvcEvent $event)
+    {
+        $match = $event->getRouteMatch();
+        // var_dump($match); exit;
+        if (!$match) {
+            // we cannot do anything without a resolved route
+            return;
+        }
+        
+        $controller = $match->getParam('controller');
+        $action = $match->getParam('action');
+        $namespace = $match->getParam('__NAMESPACE__');
     }
 }
