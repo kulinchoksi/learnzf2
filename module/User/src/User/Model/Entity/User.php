@@ -1,11 +1,36 @@
 <?php
 namespace User\Model\Entity;
 
+use Zend\Form\Annotation;
+
+/**
+ * @Annotation\Name("users")
+ * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ClassMethods")
+ */
+
 class User {
+
+        /**
+         * @Annotation\Exclude()
+         */
 	protected $id;
 	protected $role;
 	protected $name;
 	protected $email;
+
+        /**
+         * @Annotation\Type("Zend\Form\Element\Text")
+         * @Annotation\Options({"label" : "Your phone number: "})
+         * @Annotation\Filter({"name" : "StripTags"})
+         * @Annotation\Filter({"name" : "StringTrim"})
+         * @Annotation\Validator(
+         *  {"name" : "RegEx", "options" : {"pattern" : "/^[\d-\/]+$/"}}
+         * )
+         * @Annotation\Attributes(
+         *  {"type" : "tel", "required" : true, "pattern" : "^[\d-/]+$"}
+         * )
+         * 
+         */
 	protected $phone;
 	protected $photo;
 	protected $password;
