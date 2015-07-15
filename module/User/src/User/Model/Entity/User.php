@@ -13,7 +13,7 @@ class User {
 	/**
 	 * @return the $id
 	 */
-	public function getId() 
+	public function getId()
 	{
 		return $this->id;
 	}
@@ -21,7 +21,7 @@ class User {
 	/**
 	 * @return the $role
 	 */
-	public function getRole() 
+	public function getRole()
 	{
 		return $this->role;
 	}
@@ -29,7 +29,7 @@ class User {
 	/**
 	 * @return the $email
 	 */
-	public function getEmail() 
+	public function getEmail()
 	{
 		return $this->email;
 	}
@@ -37,7 +37,7 @@ class User {
 	/**
 	 * @return the $phone
 	 */
-	public function getPhone() 
+	public function getPhone()
 	{
 		return $this->phone;
 	}
@@ -45,7 +45,7 @@ class User {
 	/**
 	 * @param field_type $id
 	 */
-	public function setId($id) 
+	public function setId($id)
 	{
 		$this->id = $id;
 	}
@@ -53,7 +53,7 @@ class User {
 	/**
 	 * @param field_type $role
 	 */
-	public function setRole($role) 
+	public function setRole($role)
 	{
 		$this->role = $role;
 	}
@@ -61,7 +61,7 @@ class User {
 	/**
 	 * @param field_type $email
 	 */
-	public function setEmail($email) 
+	public function setEmail($email)
 	{
 		$this->email = $email;
 	}
@@ -69,7 +69,7 @@ class User {
 	/**
 	 * @param field_type $phone
 	 */
-	public function setPhone($phone) 
+	public function setPhone($phone)
 	{
 		$this->phone = $phone;
 	}
@@ -77,7 +77,7 @@ class User {
 	/**
 	 * @return the $name
 	 */
-	public function getName() 
+	public function getName()
 	{
 		return $this->name;
 	}
@@ -85,23 +85,23 @@ class User {
 	/**
 	 * @param field_type $name
 	 */
-	public function setName($name) 
+	public function setName($name)
 	{
 		$this->name = $name;
 	}
 
-	public function getPhoto() 
+	public function getPhoto()
 	{
 		return $this->photo;
 	}
 
-	public function setPhoto($photo) 
+	public function setPhoto($photo)
 	{
 		if(isset($photo['tmp_name'])) {
 			$this->photo = $photo['tmp_name'];
 		}
 	}
-	
+
 	/**
 	 * Gets the current password hash
 	 *
@@ -111,7 +111,7 @@ class User {
 	{
 		return $this->password;
 	}
-	
+
 	/**
 	 * Sets the password
 	 *
@@ -121,7 +121,7 @@ class User {
 	{
 		$this->password = $this->hashPassword($password);
 	}
-	
+
 	/**
 	 * Verifies if the passwords match
 	 *
@@ -132,7 +132,7 @@ class User {
 	{
 		return ($this->password == $this->hashPassword($password));
 	}
-	
+
 	/**
 	 * Hashes a password
 	 * @param string $password

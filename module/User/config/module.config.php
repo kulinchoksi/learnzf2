@@ -19,7 +19,7 @@ return array(
                     'default' => array(
                         'type'    => 'Segment',
                         'options' => array(
-                            'route'    => '/[:controller[/:action]]',
+                            'route'    => '/[:controller[/:action[/:id]]]',
                             'constraints' => array(
                                 'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
                                 'action'     => '[a-zA-Z][a-zA-Z0-9_-]*',
@@ -37,6 +37,7 @@ return array(
     'controllers' => array(
         'invokables' => array(
             'User\Controller\Account' => 'User\Controller\AccountController',
+            'User\Controller\Log'     => 'User\Controller\LogController',
         ),
     ),
     
@@ -49,6 +50,13 @@ return array(
     'service_manager' => array(
         'factories' => array(
             'database' => 'User\Service\Factory\Database'
+        ),
+        'invokables' => array(
+            'table-gateway' => 'User\Service\Invokable\TableGateway',
+            'user-entity'  => 'User\Model\Entity\User',
+        ),
+        'shared' => array(
+            'user-entity' => false,
         )
     ),
 
