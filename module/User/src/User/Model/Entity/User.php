@@ -16,6 +16,11 @@ class User {
 	protected $id;
 	protected $role;
 	protected $name;
+
+        /**
+         * @Annotation\Flags({"priority" : "500"})
+         * @Column(type="string")
+         */
 	protected $email;
 
         /**
@@ -33,6 +38,13 @@ class User {
          */
 	protected $phone;
 	protected $photo;
+
+        /**
+         * @Annotation\Options({"label" : "Password:", "priority" : "400"})
+         * @Annotation\Flags({"priority" : "400"})
+         *
+         * @Column(type="string")
+         */
 	protected $password;
 
 	/**
