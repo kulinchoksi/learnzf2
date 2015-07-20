@@ -72,8 +72,14 @@ class AccountController extends AbstractActionController
 
             $form->setData($data);
             if ($form->isValid()) {
+                /*
                 $userModel = new UserModel();
                 $id = $userModel->insert($form->getData());
+                */
+
+                $entityManager = $this->serviceLocator->get('entity-manager');
+                $entityManager->persist($entity);
+                $entityManager->flush();
                 
                 // redirect to view user action
                 return $this->redirect()->toRoute('user/default', array(
@@ -114,8 +120,16 @@ class AccountController extends AbstractActionController
     {
         $id = $this->getRequest()->getQuery()->get('id');
         if ($id) {
+            /*
             $userModel = new UserModel();
             $userModel->delete(array('id' => $id));
+            */
+
+            $entityManager = $this->serviceLocator->get('entity-manager');
+            $userEntity = $this->serviceLocator->get('user-entity');
+            $userEntity->setId($id);
+            $entityManager->remove($userEntity);
+            $entityManager->flush();
             
             // redirect to view page
             return $this->redirect()->toRoute('user/default', array(

@@ -6,12 +6,16 @@ use Zend\Form\Annotation;
 /**
  * @Annotation\Name("users")
  * @Annotation\Hydrator("Zend\Stdlib\Hydrator\ClassMethods")
+ *
+ * @Entity @Table(name="users")
  */
 
 class User {
 
         /**
          * @Annotation\Exclude()
+         *
+         * @id @GeneratedValue @Column(type="integer")
          */
 	protected $id;
 	protected $role;
@@ -34,7 +38,8 @@ class User {
          * @Annotation\Attributes(
          *  {"type" : "tel", "required" : true, "pattern" : "^[\d-/]+$"}
          * )
-         * 
+         *
+         * @Column(type="string")
          */
 	protected $phone;
 	protected $photo;

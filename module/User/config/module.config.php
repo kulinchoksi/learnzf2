@@ -49,7 +49,8 @@ return array(
     
     'service_manager' => array(
         'factories' => array(
-            'database' => 'User\Service\Factory\Database'
+            'database' => 'User\Service\Factory\Database',
+            'entity-manager' => 'User\Service\Factory\EntityManager',
         ),
         'invokables' => array(
             'table-gateway' => 'User\Service\Invokable\TableGateway',
@@ -64,5 +65,15 @@ return array(
         'map' => array(
             'users' => 'User\Model\User',
         )
+    ),
+
+    'doctrine' => array(
+        'entity_path' => array(
+            __DIR__ . '/../src/User/Model/Entity/',
+        ),
+        'initializers' => array(
+            // list of initializers for Doctrine 2 entities
+            
+        ),
     ),
 );
