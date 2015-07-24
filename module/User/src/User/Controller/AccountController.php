@@ -1,17 +1,12 @@
 <?php
-
 namespace User\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
 use User\Model\User as UserModel;
 use User\Form\User as UserForm;
 use Zend\Form\Annotation\AnnotationBuilder;
+use Zend\EventManager\EventManager;
 
-/**
- * Description of AccountController
- *
- * @author ASUS
- */
 class AccountController extends AbstractActionController
 {
     public function indexAction()
@@ -21,6 +16,7 @@ class AccountController extends AbstractActionController
     
     public function addAction()
     {
+        // The annotation builder help us create a form from the annotations in the user entity.
         $builder = new AnnotationBuilder();
         $entity = $this->serviceLocator->get('user-entity');
 
@@ -57,10 +53,13 @@ class AccountController extends AbstractActionController
             'attributes' => array(
                 'value' => 'Submit',
                 'required' => 'false',
-            )
+            ),
         ));
 
-        // set the values back to entity from submitted to form
+        // We bind the entity to the user. If the form tries to read/write data from/to the entity
+        // it will use the hydrator specified in the entity to achieve this. In our case we use ClassMethods
+        // hydrator which means that reading will happen calling the getter methods and writing will happen by
+        // calling the setter methods.
         $form->bind($entity);
         
         if ($this->getRequest()->isPost()) {
@@ -77,15 +76,23 @@ class AccountController extends AbstractActionController
                 $id = $userModel->insert($form->getData());
                 */
 
+                // We use now the Doctrine 2 entity manager to save user data to the database
                 $entityManager = $this->serviceLocator->get('entity-manager');
                 $entityManager->persist($entity);
                 $entityManager->flush();
-                
+
+                $this->flashmessenger()->addSuccessMessage('User was added successfully.');
+
+                $event = new EventManager('user');
+                $event->trigger('register', $this, array(
+                    'user'=> $entity,
+                ));
+
                 // redirect to view user action
                 return $this->redirect()->toRoute('user/default', array(
                     'controller' => 'Account',
                     'action' => 'view',
-                    'id' => $id,
+                    'id' => $entity->getId(),
                 ));
             }
         }
@@ -95,14 +102,16 @@ class AccountController extends AbstractActionController
     }
     
     /**
+     * anonymous users can use this action to register new accounts
      * 
-     * @return typeanonymous users can use this action to register new accounts
+     * @return route
      */
     public function registerAction()
     {
         $result = $this->forward()->dispatch('User\Controller\Account', array(
             'action' => 'add',
         ));
+
         return $result;
     }
     
@@ -119,26 +128,24 @@ class AccountController extends AbstractActionController
     public function deleteAction()
     {
         $id = $this->getRequest()->getQuery()->get('id');
-        if ($id) {
-            /*
-            $userModel = new UserModel();
-            $userModel->delete(array('id' => $id));
-            */
-
-            $entityManager = $this->serviceLocator->get('entity-manager');
-            $userEntity = $this->serviceLocator->get('user-entity');
-            $userEntity->setId($id);
-            $entityManager->remove($userEntity);
-            $entityManager->flush();
-            
+        if(!$id) {
             // redirect to view page
             return $this->redirect()->toRoute('user/default', array(
                 'controller' => 'account',
                 'action' => 'view',
             ));
         }
+
+        /*
+        $userModel = new UserModel();
+        $userModel->delete(array('id' => $id));
+        */
         
-        return array();
+        $entityManager = $this->serviceLocator->get('entity-manager');
+        $userEntity = $this->serviceLocator->get('user-entity');
+        $userEntity->setId($id);
+        $entityManager->remove($userEntity);
+        $entityManager->flush();
     }
 
     public function meAction()

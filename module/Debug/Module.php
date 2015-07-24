@@ -2,7 +2,6 @@
 namespace Debug;
 
 use Zend\ModuleManager\Feature\AutoloaderProviderInterface;
-// use Zend\Mvc\Module\RouteListner;
 use Zend\ModuleManager\ModuleManager;
 use Zend\ModuleManager\ModuleEvent;
 use Zend\EventManager\Event;
@@ -53,6 +52,13 @@ class Module implements AutoloaderProviderInterface
         $serviceManager = $e->getApplication()->getServiceManager();
         $timer = $serviceManager->get("timer");
         $timer->start("MVC-execution");
+
+        // attach own event listener with shared event manager
+        $sharedEventManager = $eventManager->getSharedManager();
+        $sharedEventManager->attach("channel-25", "new song", function (Event $event) {
+            $artist = $event->getParam("artist");
+            error_log("Got new song from artist: " . $artist);
+        });
         
         // attach a listner to finish event with priority 2
         // priority 2 because the listner with that priority will just execute before actual finish event is triggered
@@ -61,13 +67,6 @@ class Module implements AutoloaderProviderInterface
         // attach a listner to add view layout as debug overlay while view rendering
         $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, "addDebugOverlay"), 100);
         
-        // attach own event listener with shared event manager
-        $sharedEventManager = $eventManager->getSharedManager();
-        $sharedEventManager->attach("channel-25", "new song", function (Event $event) {
-            $artist = $event->getParam("artist");
-            error_log("Got new song from artist: " . $artist);
-        });
-
         // attach profiler debugging to view enderer event
         $eventManager->attach(MvcEvent::EVENT_RENDER, array($this, 'injectViewVariables'), 100);
 

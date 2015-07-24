@@ -1,32 +1,21 @@
 <?php
-
 namespace User\Service\Invokable;
 
 use Zend\ServiceManager\ServiceLocatorAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 use Zend\Db\TableGateway\TableGateway as DbTableGateway;
 
-/**
- * Description of TableGateway
- *
- * @author ckulin
- */
 class TableGateway implements ServiceLocatorAwareInterface
 {
-
-    protected $serviceLocator;
-
+    /**
+     * @var array
+     */
     protected $cache;
 
-    public function getServiceLocator()
-    {
-        return $this->serviceLocator;
-    }
-
-    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
-    {
-        $this->serviceLocator = $serviceLocator;
-    }
+    /**
+     * @var ServiceLocatorInterface
+     */
+    protected $serviceLocator;
 
     public function get($tableName, $features=null, $resultSetPrototype=null)
     {
@@ -44,12 +33,29 @@ class TableGateway implements ServiceLocatorAwareInterface
         if (isset($tableGatewayMap[$tableName])) {
             $tableClassName = $tableGatewayMap[$tableName];
             $this->cache[$cacheKey] = new $tableClassName();
+        } else {
+            $db = $this->serviceLocator->get('database');
+            $this->cache[$cacheKey] = new DbTableGateway($tableName, $db, $features, $resultSetPrototype);
         }
-
-        $db = $this->serviceLocator->get('database');
-        $this->cache[$cacheKey] = new DbTableGateway($tableName, $db, $features, $resultSetPrototype);
-
+        
         return $this->cache[$cacheKey];
+    }
+
+    /* (non-PHPdoc)
+     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::setServiceLocator()
+     */
+    public function setServiceLocator(ServiceLocatorInterface $serviceLocator)
+    {
+        $this->serviceLocator = $serviceLocator;
+
+    }
+
+    /* (non-PHPdoc)
+     * @see \Zend\ServiceManager\ServiceLocatorAwareInterface::getServiceLocator()
+     */
+    public function getServiceLocator()
+    {
+        $this->serviceLocator;
     }
 
 }

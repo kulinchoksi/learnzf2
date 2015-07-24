@@ -1,5 +1,4 @@
 <?php
-
 namespace UserTest\Controller;
 
 use Zend\Test\PHPUnit\Controller\AbstractHttpControllerTestCase;
@@ -13,7 +12,6 @@ class AccountControllerTest extends AbstractHttpControllerTestCase
         $this->setApplicationConfig(
             include __DIR__ . '/../../config/application.config.php'
         );
-
         parent::setUp();
     }
 

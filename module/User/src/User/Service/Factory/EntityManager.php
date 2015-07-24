@@ -1,5 +1,4 @@
 <?php
-
 namespace User\Service\Factory;
 
 use Zend\ServiceManager\FactoryInterface;
@@ -12,7 +11,7 @@ use Doctrine\Common\EventArgs;
 
 class EntityManager implements FactoryInterface
 {
-    public function createService(ServiceLocatorInterface $serviceLocator)
+    public function createService (ServiceLocatorInterface $serviceLocator)
     {
         $config = $serviceLocator->get('config');
 
@@ -43,6 +42,11 @@ class EntityManager implements FactoryInterface
             }
         }
 
+        if($serviceLocator->has('doctrine-profiler')) {
+            $profiler = $serviceLocator->get('doctrine-profiler');
+            $entityManager->getConfiguration()->setSQLLogger($profiler);
+        }
+
         return $entityManager;
     }
 }
@@ -50,7 +54,6 @@ class EntityManager implements FactoryInterface
 // Quick and Dirty class to handle Doctrine 2 events
 class DoctrineEvent
 {
-
     protected $initializer;
     protected $serviceLocator;
 
@@ -65,5 +68,4 @@ class DoctrineEvent
         $entity = $event->getEntity();
         $this->initializer->initialize($entity, $this->serviceLocator);
     }
-
 }

@@ -1,11 +1,4 @@
 <?php
-
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
 namespace User\Form;
 
 Use Zend\Form\Form;
@@ -13,15 +6,11 @@ Use Zend\InputFilter\InputFilter;
 Use Zend\InputFilter\InputFilterInterface;
 Use Zend\InputFilter\Factory as InputFactory;
 
-/**
- * Description of User
- *
- * @author ASUS
- */
-class User extends Form {
-    public function __construct()
+class User extends Form
+{
+    public function __construct($name='user')
     {
-        parent::__construct();
+        parent::__construct($name);
         
         $this->setAttribute('method', 'post');
         
@@ -97,7 +86,7 @@ class User extends Form {
             ),
             'attributes' => array(
                 'id' => 'photo',
-                'required' => 'required',
+                // 'required' => 'required',
             ),
         ));
         
@@ -264,9 +253,9 @@ class User extends Form {
                             // error message reporting that required field is empty
                             'target' => 'data/image/photos/',
                             'randomize' => true,
-                        )
-                    )
-                )
+                        ),
+                    ),
+                ),
             )));
 
             // phone filter and validation

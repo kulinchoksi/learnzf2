@@ -7,8 +7,11 @@ return array(
             'user' => array(
                 'type'    => 'Literal',
                 'options' => array(
+                    // Change this to something specific to your module
                     'route'    => '/user',
                     'defaults' => array(
+                        // Change this value to reflect the namespace in which
+                        // the controllers for your module are found
                         '__NAMESPACE__' => 'User\Controller',
                         'controller'    => 'Account',
                         'action'        => 'me',
@@ -16,6 +19,10 @@ return array(
                 ),
                 'may_terminate' => true,
                 'child_routes' => array(
+                    // This route is a sane default when developing a module;
+                    // as you solidify the routes for your module, however,
+                    // you may want to remove it and replace it with more
+                    // specific routes.
                     'default' => array(
                         'type'    => 'Segment',
                         'options' => array(
@@ -55,6 +62,7 @@ return array(
         'invokables' => array(
             'table-gateway' => 'User\Service\Invokable\TableGateway',
             'user-entity'  => 'User\Model\Entity\User',
+            'doctrine-profiler' => 'User\Service\Invokable\DoctrineProfiler',
         ),
         'shared' => array(
             'user-entity' => false,

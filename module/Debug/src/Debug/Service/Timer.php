@@ -1,5 +1,4 @@
 <?php
-
 namespace Debug\Service;
 
 /**
@@ -50,5 +49,4 @@ class Timer
         
         return microtime($this->timeAsFloat) - $this->start[$key];
     }
-    
 }

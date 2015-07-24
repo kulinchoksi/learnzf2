@@ -1,5 +1,4 @@
 <?php
-
 namespace Debug\Service\Initializer;
 
 use Zend\ServiceManager\InitializerInterface;
@@ -7,14 +6,12 @@ use Zend\Db\Adapter\Profiler\Profiler;
 use Zend\Db\Adapter\Profiler\ProfilerAwareInterface;
 use Zend\ServiceManager\ServiceLocatorInterface;
 
-/**
- * Description of DbProfiler
- *
- * @author ckulin
- */
 class DbProfiler implements InitializerInterface
 {
-
+    /**
+     *
+     * @var Zend\Db\Adapter\Profiler\Profiler
+     */
     protected $profiler;
 
     /**
@@ -42,5 +39,4 @@ class DbProfiler implements InitializerInterface
         }
         return $this->profiler;
     }
-
 }

@@ -13,8 +13,7 @@ class LogController extends AbstractActionController
    
     public function inAction() 
     {
-        if (!$this->getRequest()->isPost()) 
-        {
+        if (!$this->getRequest()->isPost()) {
             // just show the login form
             return array();
         }

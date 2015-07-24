@@ -1,15 +1,9 @@
 <?php
-
 namespace User\Model;
 
 use Zend\Db\TableGateway\AbstractTableGateway;
 use Zend\Db\TableGateway\Feature;
 
-/**
- * Description of User
- *
- * @author ASUS
- */
 class User extends AbstractTableGateway
 {
     public function __construct()
