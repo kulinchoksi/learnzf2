@@ -41,6 +41,7 @@ class User
      * @Annotation\Filter({"name":"StripTags"})
      * @Annotation\Filter({"name":"StringTrim"})
      * @Annotation\Options({"label":"Password:", "priority": "400"})
+     * @Annotation\Attributes({"required": true,"placeholder":"Type password..."})
      * @Annotation\Flags({"priority": "400"})
      *
      * @Column(type="string")
