@@ -90,9 +90,9 @@ class AccountController extends AbstractActionController
 
                 // redirect the user to the view user action
                 return $this->redirect()->toRoute('user/default', array (
-                        'controller' => 'account',
-                        'action'     => 'view',
-                        'id'		 => $entity->getId()
+                    'controller' => 'account',
+                    'action'     => 'view',
+                    'id'         => $entity->getId(),
                 ));
             }
         }
