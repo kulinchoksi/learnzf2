@@ -9,3 +9,4 @@ nbproject
 composer.lock
 vendor/*
 data/image/photos/*
+php-cs-fixer.phar
