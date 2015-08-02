@@ -1,9 +1,14 @@
 <?php
 return array(
+    'controllers' => array(
+        'invokables' => array(
+           // below is key              and below is the fully qualified class name
+           'User\Controller\Account' => 'User\Controller\AccountController',
+           'User\Controller\Log'     => 'User\Controller\LogController',
+        ),
+    ),
     'router' => array(
         'routes' => array(
-            // Simply drop new controllers in, and you can access them
-            // using the path /user/:controller/:action
             'user' => array(
                 'type'    => 'Literal',
                 'options' => array(
@@ -40,25 +45,17 @@ return array(
             ),
         ),
     ),
-    
-    'controllers' => array(
-        'invokables' => array(
-            'User\Controller\Account' => 'User\Controller\AccountController',
-            'User\Controller\Log'     => 'User\Controller\LogController',
-        ),
-    ),
-    
     'view_manager' => array(
         'template_path_stack' => array(
             'User' => __DIR__ . '/../view',
         ),
     ),
-    
-    'service_manager' => array(
+    'service_manager' => array (
         'factories' => array(
-            'database' 	      => 'User\Service\Factory\Database',
-            'entity-manager'  => 'User\Service\Factory\EntityManager',
-            'log'             => 'User\Service\Factory\Log',
+            'database' 	       => 'User\Service\Factory\Database',
+            'entity-manager'   => 'User\Service\Factory\EntityManager',
+            'log'	       => 'User\Service\Factory\Log',
+            'password-adapter' => 'User\Service\Factory\PasswordAdapter',
         ),
         'invokables' => array(
             'table-gateway'     => 'User\Service\Invokable\TableGateway',
@@ -67,9 +64,11 @@ return array(
         ),
         'shared' => array(
             'user-entity' => false,
-        )
+        ),
+        'initializers' => array (
+            'User\Service\Initializer\Password'
+        ),
     ),
-
     'table-gateway' => array(
         'map' => array(
             'users' => 'User\Model\User',
@@ -77,12 +76,12 @@ return array(
     ),
 
     'doctrine' => array(
-        'entity_path' => array(
-            __DIR__ . '/../src/User/Model/Entity/',
+        'entity_path' => array (
+                __DIR__ . '/../src/User/Model/Entity/',
         ),
-        'initializers' => array(
-            // list of initializers for Doctrine 2 entities
-            
+        'initializers' => array (
+            // add here the list of initializers for Doctrine 2 entities..
+            'User\Service\Initializer\Password'
         ),
     ),
 );
