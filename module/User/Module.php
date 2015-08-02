@@ -19,18 +19,19 @@ class Module implements AutoloaderProviderInterface
             ),
             'Zend\Loader\StandardAutoloader' => array(
                 'namespaces' => array(
-                    __NAMESPACE__ => __DIR__ . '/src/' . __NAMESPACE__,
+            // if we're in a namespace deeper than one level we need to fix the \ in the path
+                    __NAMESPACE__ => __DIR__ . '/src/' . str_replace('\\', '/' , __NAMESPACE__),
                 ),
             ),
         );
     }
-    
+
     public function onBootstrap(MvcEvent $event)
     {
         $services = $event->getApplication()->getServiceManager();
         $dbAdapter = $services->get('database');
         \Zend\Db\TableGateway\Feature\GlobalAdapterFeature::setStaticAdapter($dbAdapter);
-        
+
         $eventManager = $event->getApplication()->getEventManager();
         $eventManager->attach(MvcEvent::EVENT_ROUTE, array($this, 'protectPage'), -100);
 
@@ -49,7 +50,7 @@ class Module implements AutoloaderProviderInterface
             $log->warn('Registered user ['.$user->getName().'/'.$user->getId().']');
         });
     }
-    
+
     public function protectPage(MvcEvent $event)
     {
         $match = $event->getRouteMatch();
@@ -58,9 +59,20 @@ class Module implements AutoloaderProviderInterface
             // we cannot do anything without a resolved route
             return;
         }
-        
+
         $controller = $match->getParam('controller');
-        $action = $match->getParam('action');
-        $namespace = $match->getParam('__NAMESPACE__');
+        $action     = $match->getParam('action');
+        $namespace  = $match->getParam('__NAMESPACE__');
+
+        $services = $event->getApplication()->getServiceManager();
+        $auth = $services->get('auth');
+        if (!$auth->hasIdentity()) {
+            // Set the response code to HTTP 401: Auth Required
+            $response = $event->getResponse();
+            $response->setStatusCode(401);
+
+            $match->setParam('controller', 'User\Controller\Log');
+            $match->setParam('action', 'in');
+        }
     }
 }

@@ -1,12 +1,5 @@
 <?php
 return array(
-    'controllers' => array(
-        'invokables' => array(
-           // below is key              and below is the fully qualified class name
-           'User\Controller\Account' => 'User\Controller\AccountController',
-           'User\Controller\Log'     => 'User\Controller\LogController',
-        ),
-    ),
     'router' => array(
         'routes' => array(
             'user' => array(
@@ -45,6 +38,14 @@ return array(
             ),
         ),
     ),
+    
+    'controllers' => array(
+        'invokables' => array(
+            'User\Controller\Account' => 'User\Controller\AccountController',
+            'User\Controller\Log'     => 'User\Controller\LogController',
+        ),
+    ),
+    
     'view_manager' => array(
         'template_path_stack' => array(
             'User' => __DIR__ . '/../view',
@@ -56,11 +57,13 @@ return array(
             'entity-manager'   => 'User\Service\Factory\EntityManager',
             'log'	       => 'User\Service\Factory\Log',
             'password-adapter' => 'User\Service\Factory\PasswordAdapter',
+            'auth' 	       => 'User\Service\Factory\Authentication',
         ),
         'invokables' => array(
             'table-gateway'     => 'User\Service\Invokable\TableGateway',
             'user-entity'       => 'User\Model\Entity\User',
             'doctrine-profiler' => 'User\Service\Invokable\DoctrineProfiler',
+            'auth-adapter' 	=> 'User\Authentication\Adapter',
         ),
         'shared' => array(
             'user-entity' => false,
@@ -74,7 +77,6 @@ return array(
             'users' => 'User\Model\User',
         )
     ),
-
     'doctrine' => array(
         'entity_path' => array (
                 __DIR__ . '/../src/User/Model/Entity/',
