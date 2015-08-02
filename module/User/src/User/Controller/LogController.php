@@ -2,6 +2,7 @@
 namespace User\Controller;
 
 use Zend\Mvc\Controller\AbstractActionController;
+use Zend\EventManager\EventManager;
 
 class LogController extends AbstractActionController
 {
@@ -31,6 +32,9 @@ class LogController extends AbstractActionController
                 'action' => 'me',
             ));
         } else {
+            $event = new EventManager('user');
+            $event->trigger('log-fail', $this, array('username'=> $username));
+
             // @todo: report some errors
             $this->flashMessenger()->addErrorMessage("Unauthenticated request!");
         }

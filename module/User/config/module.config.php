@@ -56,12 +56,13 @@ return array(
     
     'service_manager' => array(
         'factories' => array(
-            'database' => 'User\Service\Factory\Database',
-            'entity-manager' => 'User\Service\Factory\EntityManager',
+            'database' 	      => 'User\Service\Factory\Database',
+            'entity-manager'  => 'User\Service\Factory\EntityManager',
+            'log'             => 'User\Service\Factory\Log',
         ),
         'invokables' => array(
-            'table-gateway' => 'User\Service\Invokable\TableGateway',
-            'user-entity'  => 'User\Model\Entity\User',
+            'table-gateway'     => 'User\Service\Invokable\TableGateway',
+            'user-entity'       => 'User\Model\Entity\User',
             'doctrine-profiler' => 'User\Service\Invokable\DoctrineProfiler',
         ),
         'shared' => array(
