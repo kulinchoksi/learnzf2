@@ -21,19 +21,23 @@ class AccountControllerTest extends AbstractHttpControllerTestCase
         $serviceManager = $application->getServiceManager();
         $eventManager = $application->getEventManager();
 
-        // request object can be accessed and modified
+        // This is how the request object can be accessed and modified.
         $request = $this->getRequest();
 
-        // dispatch returns the result
+        $user = $serviceManager->get('user');
+        $config = $serviceManager->get('config');
+        $user->setRole($config['acl']['defaults']['member_role']);
+
+        // The dispatch method returns the result.
         $result = $this->dispatch('/user/account/me');
-        
+
         $this->assertActionName('me');
         $this->assertControllerName('User\Controller\Account');
 
-        // response object can be accessed
+        // This is how the response object can be accessed.
         $response = $this->getResponse();
 
-        // use the response to check the status code
+        // And here we can use the response to check the status code.
         $this->assertEquals(200, $response->getStatusCode());
     }
 }
