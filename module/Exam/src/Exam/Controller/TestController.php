@@ -58,8 +58,8 @@ class TestController extends AbstractActionController
         	}
         	else {
         		// Check how many answers were correct using validation groups for partial validation.
-        		foreach ($form as $element) {
-        			if ($element instanceof QuestionInterface) {
+                        foreach ($form->getElements() as $element) {
+                            	if ($element instanceof QuestionInterface) {
         				$total++;
         				$form->setValidationGroup($element->getName());
         				$form->setData($data);
