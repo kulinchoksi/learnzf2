@@ -40,6 +40,6 @@ return array(
     ),
 
     'cache-enabled-classes' => array(
-    	' \\Zend\\Paginator\\Paginator',
+    	'\\Zend\\Paginator\\Paginator',
     )
 );
